@@ -258,6 +258,52 @@ public:
   double default_value; ///< The default value of this adjustable parameter
   double adjust_step;   ///< The allowable increment or decrement of the current value of this adjustable parameter
 
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// TODO: This structure contains the data associated with a dynamically adjustable parameter acquired from the ros parameter
+/// server via a self initialisation function.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+struct CompoundParameter
+{
+public:
+  /// Initialisation function which self populates parameter data from ros parameter server.
+  /// @param[in] name_input The unique name of the parameter to look for on ros parameter server
+  /// @param[in] keys TODO:
+  /// @param[in] base_parameter_name The base parameter name prepended to 'name_input' common to all parameters
+  /// @param[in] required_input Bool denoting if this parameter is required to be initialised
+  inline void init(const std::string &name_input,
+                   const std::vector<std::string> key_names,
+                   const std::string &base_parameter_name = "syropod/parameters/",
+                   const bool &required_input = true)
+  {
+    ros::NodeHandle n;
+    name = name_input;
+    required = required_input;
+    keys = key_names;
+    initialised = n.getParam(base_parameter_name + name_input, data);
+    ROS_ERROR_COND(!initialised, "Error reading parameter/s %s from rosparam."
+                   " Check config file is loaded and type is correct\n", name.c_str());
+
+    if (initialised)
+    {
+      for (auto &key : keys) // access by reference to avoid copying
+      {
+        ROS_ERROR_COND(!initialised || data.count(key) == 0 || data.count(key) > 1,
+                       "Error reading key %s from parameter/s %s"
+                       " Check config file is loaded and type is correct\n",
+                       key.c_str(), name.c_str());
+      }
+    }
+  }
+
+  std::string name;              ///< Name of the parameter
+  std::map<std::string, T> data; ///< Data which defines parameter
+  bool required = true;          ///< Denotes if this parameter is required to be initialised
+  bool initialised = false;      ///< Denotes if this parameter has been initialised
+  std::vector<std::string> keys; ///< TODO:
+
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
