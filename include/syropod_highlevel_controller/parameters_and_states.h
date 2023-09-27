@@ -341,8 +341,8 @@ struct Parameters
   Parameter<bool> clamp_joint_velocities;          ///< A bool denoting if joint velocity limits are adhered to
   Parameter<bool> ignore_IK_warnings;              ///< A bool denoting if IK deviation warnings are displayed to user
 
-  Parameter<std::map<std::string, double>> joint_parameters[8][6]; ///< Array of maps of joint parameter names & values*
-  Parameter<std::map<std::string, double>> link_parameters[8][7];  ///< Array of maps of link parameter names & values*
+  CompoundParameter<double> joint_parameters[8][6]; ///< Array of maps of joint parameter names & values*
+  CompoundParameter<double> link_parameters[8][7];  ///< Array of maps of link parameter names & values*
   // *Max possible: 8 legs with 6 joints and 7 links each
 
   // Walk controller parameters

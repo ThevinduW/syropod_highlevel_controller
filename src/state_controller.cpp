@@ -1855,8 +1855,9 @@ void StateController::initParameters(void)
     for (leg_name_it = leg_ids.begin(); leg_name_it != leg_ids.end(); ++leg_name_it, ++leg_id_num)
     {
       std::string leg_id_name = *leg_name_it;
-      params_.leg_stance_positions[leg_id_num].init(leg_id_name + "_stance_position");
-      params_.link_parameters[leg_id_num][0].init(leg_id_name + "_base_link_parameters");
+      params_.leg_stance_positions[leg_id_num].init(leg_id_name + "_stance_position", {"x", "y"});
+      params_.link_parameters[leg_id_num][0].init(leg_id_name + "_base_link_parameters", 
+        {"min", "max", "packed", "unpacked", "offset", "max_vel"});
       uint joint_count = params_.leg_DOF.data[leg_id_name];
 
       if (joint_count > params_.joint_id.data.size() || joint_count > params_.link_id.data.size() + 1)
@@ -1873,8 +1874,9 @@ void StateController::initParameters(void)
           std::string joint_name = params_.joint_id.data[i - 1];
           std::string link_parameter_name = leg_id_name + "_" + link_name + "_link_parameters";
           std::string joint_parameter_name = leg_id_name + "_" + joint_name + "_joint_parameters";
-          params_.link_parameters[leg_id_num][i].init(link_parameter_name);
-          params_.joint_parameters[leg_id_num][i - 1].init(joint_parameter_name);
+          params_.link_parameters[leg_id_num][i].init(link_parameter_name, {"d", "theta", "r", "alpha"});
+          params_.joint_parameters[leg_id_num][i - 1].init(joint_parameter_name, 
+            {"min", "max", "packed", "unpacked", "offset", "max_vel"});
         }
       }
     }
