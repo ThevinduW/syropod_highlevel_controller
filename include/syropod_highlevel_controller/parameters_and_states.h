@@ -261,8 +261,8 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/// TODO: This structure contains the data associated with a dynamically adjustable parameter acquired from the ros parameter
-/// server via a self initialisation function.
+/// This structure contains the data associated with a nested parameter acquired from the ros parameter server via a self
+/// initialisation function.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 struct CompoundParameter
@@ -270,7 +270,7 @@ struct CompoundParameter
 public:
   /// Initialisation function which self populates parameter data from ros parameter server.
   /// @param[in] name_input The unique name of the parameter to look for on ros parameter server
-  /// @param[in] keys TODO:
+  /// @param[in] keys values of keys in the compound parameter that must exist when the parameter is parsed
   /// @param[in] base_parameter_name The base parameter name prepended to 'name_input' common to all parameters
   /// @param[in] required_input Bool denoting if this parameter is required to be initialised
   inline void init(const std::string &name_input,
@@ -302,7 +302,7 @@ public:
   std::map<std::string, T> data; ///< Data which defines parameter
   bool required = true;          ///< Denotes if this parameter is required to be initialised
   bool initialised = false;      ///< Denotes if this parameter has been initialised
-  std::vector<std::string> keys; ///< TODO:
+  std::vector<std::string> keys; ///< Values of key fields of sub-parameter values
 
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
